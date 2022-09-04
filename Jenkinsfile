@@ -15,7 +15,7 @@ pipeline {
     //The values for these user-specified parameters are made available to Pipeline steps via the params object, see
     //the Parameters, Declarative Pipeline for its specific usage.
     parameters {
-        string(name: 'SPEC', defaultValue: 'cypress/integration/**/**', description: 'Enter script path you want to execute')
+        string(name: 'SPEC', defaultValue: 'cypress/e2e/features/*.feature', description: 'Enter script path you want to execute')
         choice(name: 'BROWSER', choices: ['chrome', 'edge', 'firefox'], description: 'Pick the web browser you want to use to run your features')
     }
     
@@ -63,7 +63,6 @@ pipeline {
 
                 
             echo "Generating Reports"
-            bat "npm run cy:report"
             bat "npm run allure:report"
                 
 
@@ -75,9 +74,9 @@ pipeline {
             //     color: COLOR_MAP[currentBuild.currentResult],
             //     message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n Tests:${SPEC} executed at ${BROWSER} \n More info at: ${env.BUILD_URL}HTML_20Report/"
             
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'cypress/reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])            
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'reports', reportFiles: 'cucumber-report.html', reportName: 'HTML Report', reportTitles: ''])            
             
-            cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/*.cucumber.json', hideEmptyHooks: true, pendingStepsNumber: -1, skipEmptyJSONFiles: true, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
+            cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/cucumber-report.json', hideEmptyHooks: true, pendingStepsNumber: -1, skipEmptyJSONFiles: true, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             //deleteDir()
         }

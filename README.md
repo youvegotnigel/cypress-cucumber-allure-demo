@@ -1,4 +1,4 @@
-# synopsis-qa-automation
+# cypress-cucumber-allure-demo
 This project is created to show how we can leverage Cucumber BDD framework in Cypress. Steps involved in configuring your project are following:
 
 ## Pre-Requisites

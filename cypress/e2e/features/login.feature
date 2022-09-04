@@ -13,7 +13,7 @@ Feature: Login page
 
     Scenario: Blocked Login
         When A user enters the username "locked_out_user"
-        And A user enters the password "secret_sauce"
+        And A user enters the password "secret_sauce1"
         And A user clicks on the login button
         Then The error message "Epic sadface: Sorry, this user has been locked out." is displayed
 

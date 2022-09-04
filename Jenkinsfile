@@ -76,6 +76,8 @@ pipeline {
             
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'reports', reportFiles: 'cucumber-report.html', reportName: 'HTML Report', reportTitles: ''])            
             
+            emailext body: 'REPORT BODY', subject: 'CYPRESS 10 CUCUMBER ALLURE DEMO REPORT', to: 'nigel.mulholland@vitalhub.com'
+            
             cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/cucumber-report.json', hideEmptyHooks: true, pendingStepsNumber: -1, skipEmptyJSONFiles: true, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             //deleteDir()

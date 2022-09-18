@@ -29,11 +29,7 @@ module.exports = defineConfig({
       await addCucumberPreprocessorPlugin(on, config);
       return config;
     },
-    env: {
-      allure: true,
-      allureReuseAfterSpec: true,
-      allureResultsPath: 'allure-results',
-    },
+
     specPattern: "cypress/e2e/features/*.feature",
     baseUrl: "https://www.saucedemo.com",
     chromeWebSecurity: false,

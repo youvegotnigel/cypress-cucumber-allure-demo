@@ -74,9 +74,7 @@ allure-results
 # Cypress folders
 cypress/videos
 cypress/screenshots
-cypress/reports
-cypress/jsonlogs
-cucumber-report.html
+reports
 
 # Cypress examples
 cypress/e2e/1-getting-started

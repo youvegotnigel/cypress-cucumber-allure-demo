@@ -53,9 +53,6 @@ npx cypress run --help
 - https://github.com/Shelex/cypress-allure-plugin
 - https://www.npmjs.com/package/cypress-xpath
 
-## Github Issues
-- https://github.com/cucumber/json-formatter/issues/13
-
 
 ## How to Run and Generate Report
 

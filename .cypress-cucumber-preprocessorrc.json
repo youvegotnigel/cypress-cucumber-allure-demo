@@ -13,6 +13,8 @@
     "output": "reports/cucumber-report.html"
   },
   "stepDefinitions": [
-      "cypress/e2e/step_definitions/**/*.{js,ts}"
+      "[filepath]/**/*.{js,ts}",
+      "[filepath].{js,ts}",
+      "cypress/e2e/step_definitions/*.{js,ts}"
   ]
 }

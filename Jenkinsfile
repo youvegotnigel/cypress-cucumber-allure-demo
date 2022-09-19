@@ -2,20 +2,20 @@ pipeline {
     //The agent section specifies where the entire Pipeline, or a specific stage, 
     //will execute in the Jenkins environment depending on where the agent section is placed.
     agent { 
-        label 'windows-agent-nigel'
+        label 's12-agent'
      }
     
     //The environment directive specifies a sequence of key-value pairs which will be defined
     //as environment variables for all steps, or stage-specific steps, depending on where the environment directive is located within the Pipeline.
     environment {
-        BUILD_USER = 'youvegotnigel'
+        BUILD_USER = 'BUILD'
     }
     
     //The parameters directive provides a list of parameters that a user should provide when triggering the Pipeline.
     //The values for these user-specified parameters are made available to Pipeline steps via the params object, see
     //the Parameters, Declarative Pipeline for its specific usage.
     parameters {
-        string(name: 'SPEC', defaultValue: 'cypress/e2e/features/*.feature', description: 'Enter script path you want to execute')
+        string(name: 'SPEC', defaultValue: 'cypress/e2e/features/**/*.feature', description: 'Enter script path you want to execute')
         choice(name: 'BROWSER', choices: ['chrome', 'edge', 'firefox'], description: 'Pick the web browser you want to use to run your features')
     }
     
@@ -30,6 +30,22 @@ pipeline {
     //or other stage-specific directives. Practically speaking, all of the real work done by a Pipeline will be wrapped
     //in one or more stage directives.
     stages {
+
+        stage('PreBuild-Email'){
+            steps {
+                script {
+                   def mailRecipients = 'test2002@malinator.com'
+                   def jobName = currentBuild.fullDisplayName
+                   //emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+                   emailext body: '''Hello''',
+                    mimeTye: 'text/html',
+                    subject: "[Jenkins] Started ${jobName}",
+                    to: "${mailRecipients}",
+                    replyTo: "${mailRecipients}",
+                    recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+                }
+            }
+        }
         
         stage('Build'){
             //The steps section defines a series of one or more steps to be executed in a given stage directive.
@@ -63,11 +79,11 @@ pipeline {
 
                 
             echo "Generating Reports"
-            //bat "npm run allure:report" 
+            //bat "npm run allure:report"
             /*
                 TODO : Fix 'allure' is not recognized as an internal or external command, error in Jenkins.
             */
-                
+                  
 
             // script {
             //     BUILD_USER = getBuildUser()
@@ -76,11 +92,36 @@ pipeline {
             // slackSend channel: '#jenkins-example',
             //     color: COLOR_MAP[currentBuild.currentResult],
             //     message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n Tests:${SPEC} executed at ${BROWSER} \n More info at: ${env.BUILD_URL}HTML_20Report/"
-            
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'reports', reportFiles: 'cucumber-report.html', reportName: 'HTML Report', reportTitles: ''])            
-            
+
+            success {
+                emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+                to: "${EMAIL_TO}", 
+                subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+            }
+        
+            failure {
+                emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+                to: "${EMAIL_TO}", 
+                subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+            }
+            unstable {
+                emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+                to: "${EMAIL_TO}", 
+                subject: 'Unstable build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+            }
+            changed {
+                emailext body: 'Check console output at $BUILD_URL to view the results.', 
+                to: "${EMAIL_TO}", 
+                subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER'
+            }
+
+
+
+
+
+
+            //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './', reportFiles: 'cucumber-report.html', reportName: 'HTML Report', reportTitles: ''])            
             //emailext body: 'REPORT BODY', subject: 'CYPRESS 10 CUCUMBER ALLURE DEMO REPORT', to: 'test2002@malinator.com'
-            
             cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/cucumber-report.json', hideEmptyHooks: true, pendingStepsNumber: -1, skipEmptyJSONFiles: true, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             //deleteDir()

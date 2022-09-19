@@ -37,7 +37,7 @@ pipeline {
                 echo "Building the application"
 
                 echo "Deleting previous reports"
-                bat "npm run reports:clear"
+                bat "npm run allure:clear"
             }
         }
         

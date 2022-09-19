@@ -6,7 +6,7 @@ This project is created to show how we can leverage Cucumber BDD framework in Cy
 * IDE - [VS Code](https://code.visualstudio.com/download) 
 
 ## Set Up
-* Clone the project and run ```npm init i``` to  install all dependencies.  
+* Clone the project and run ```npm i``` to  install all dependencies.  
 
 ## Cypress Help
 ```

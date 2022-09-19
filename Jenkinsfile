@@ -63,7 +63,10 @@ pipeline {
 
                 
             echo "Generating Reports"
-            //bat "npm run allure:report"
+            //bat "npm run allure:report" 
+            /*
+                TODO : Fix 'allure' is not recognized as an internal or external command, error in Jenkins.
+            */
                 
 
             // script {

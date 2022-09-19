@@ -15,5 +15,5 @@ Feature: Inventory Page
             | item                     | price  |
             | Sauce Labs Backpack      | $29.99 |
             | Sauce Labs Fleece Jacket | $49.99 |
-            | Sauce Labs Bike Light    | $9.999 |
+            | Sauce Labs Bike Light    | $9.99  |
 

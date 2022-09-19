@@ -1,3 +1,5 @@
+def EMAIL_TO = "test2002@malinator.com"
+
 pipeline {
     //The agent section specifies where the entire Pipeline, or a specific stage, 
     //will execute in the Jenkins environment depending on where the agent section is placed.
@@ -69,9 +71,6 @@ pipeline {
                 echo "Deploying"
             }
         }
-    }
-    environment {
-        EMAIL_TO = 'test2002@malinator.com'
     }
 
     post {

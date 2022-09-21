@@ -87,29 +87,29 @@ pipeline {
             // emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
             // subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER', 
             // to: 'test2002@mailinator.com'
-
+            emailext body: 'Check console output at $BUILD_URL to view the results. \\n\\n ${CHANGES} \\n\\n -------------------------------------------------- \\n${BUILD_LOG, maxLines=100, escapeHtml=false}', subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER', to: 'youvegotnigel@gmail.com'
             cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/cucumber-report.json', hideEmptyHooks: true, pendingStepsNumber: -1, skipEmptyJSONFiles: true, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             //deleteDir()
         }
 
-        success {
-            echo 'This will run only if successful' 
-            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-            to: "youvegotnigel@gmail.com", 
-            subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
+        // success {
+        //     echo 'This will run only if successful' 
+        //     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+        //     to: "youvegotnigel@gmail.com", 
+        //     subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+        // }
         
-        failure {
-            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-            to: "test2002@mailinator.com", 
-            subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
+        // failure {
+        //     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+        //     to: "test2002@mailinator.com", 
+        //     subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+        // }
                
-        changed {
-            emailext body: 'Check console output at $BUILD_URL to view the results.', 
-            to: "test2002@mailinator.com", 
-            subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
+        // changed {
+        //     emailext body: 'Check console output at $BUILD_URL to view the results.', 
+        //     to: "test2002@mailinator.com", 
+        //     subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER'
+        // }
     }
 }

@@ -77,27 +77,6 @@ pipeline {
             //     color: COLOR_MAP[currentBuild.currentResult],
             //     message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} by ${BUILD_USER}\n Tests:${SPEC} executed at ${BROWSER} \n More info at: ${env.BUILD_URL}HTML_20Report/"
 
-            // success {
-            //     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-            //     to: "${EMAIL_TO}", 
-            //     subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-            // }
-        
-            // failure {
-            //     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-            //     to: "${EMAIL_TO}", 
-            //     subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-            // }
-            // unstable {
-            //     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-            //     to: "${EMAIL_TO}", 
-            //     subject: 'Unstable build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-            // }
-            // changed {
-            //     emailext body: 'Check console output at $BUILD_URL to view the results.', 
-            //     to: "${EMAIL_TO}", 
-            //     subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER'
-            // }
 
 
 
@@ -105,13 +84,31 @@ pipeline {
 
 
             //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './', reportFiles: 'cucumber-report.html', reportName: 'HTML Report', reportTitles: ''])            
-            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
-            subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER', 
-            to: 'test2002@mailinator.com'
+            // emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+            // subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER', 
+            // to: 'test2002@mailinator.com'
 
             cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/cucumber-report.json', hideEmptyHooks: true, pendingStepsNumber: -1, skipEmptyJSONFiles: true, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             //deleteDir()
+        }
+
+        success {
+            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+            to: "test2002@mailinator.com", 
+            subject: 'Build Success in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+        }
+        
+        failure {
+            emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
+            to: "test2002@mailinator.com", 
+            subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+        }
+               
+        changed {
+            emailext body: 'Check console output at $BUILD_URL to view the results.', 
+            to: "test2002@mailinator.com", 
+            subject: 'Jenkins build is back to normal: $PROJECT_NAME - #$BUILD_NUMBER'
         }
     }
 }
